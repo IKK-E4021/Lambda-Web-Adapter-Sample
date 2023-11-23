@@ -14,7 +14,7 @@ function App() {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await instance.get("/1")
+      const res = await instance.get("/api/users/1")
       setData(res.data);
     };
     getData();

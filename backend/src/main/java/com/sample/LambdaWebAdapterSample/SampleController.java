@@ -5,11 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:3000")
 public class SampleController {
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<SampleResponse> sample() {
         var sampleResponse = SampleResponse
                 .builder()
