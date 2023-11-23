@@ -1,0 +1,33 @@
+name: Push ECR
+
+on:
+  push:
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+
+      - uses: aws-actions/amazon-ecr-login@v1
+        id: login-ecr # outputs で参照するために id を設定
+
+      - name: build and push docker image to ecr
+        env:
+          # ECR レジストリを `aws-actions/amazon-ecr-login` アクションの `outputs.registry` から取得
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          # イメージを push する ECR リポジトリ名
+          REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
+          # 任意のイメージタグ
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build . --tag ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
+          docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
