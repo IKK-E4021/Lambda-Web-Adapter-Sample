@@ -10,7 +10,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "REACT_APP_API_BASE_URL=http://localhost:8080 react-scripts start",
     "build": "react-scripts build"
   },
   "eslintConfig": {
