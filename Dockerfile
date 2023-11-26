@@ -11,7 +11,7 @@ WORKDIR /app
 COPY frontend/package.json frontend/package-lock.json* /app/
 RUN npm ci
 COPY frontend/ /app/
-RUN npm run build
+RUN npm run build:development
 
 # 最終ステージ: イメージ組み立て
 FROM amazoncorretto:17.0.9
